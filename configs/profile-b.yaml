@@ -1,0 +1,24 @@
+profile: B
+brokers:
+  - experiment-kafka-bootstrap.kafka.svc:9092
+topic: experiment-profile-b
+consumer_group: experiment-consumer
+partitions: 3
+replication_factor: 3
+min_insync_replicas: 2
+producer:
+  rate_per_second: 100
+  acks: all
+  idempotent: true
+  retries: 3
+message:
+  payload_bytes: 1024
+metrics:
+  producer_address: ":8080"
+  consumer_address: ":8081"
+experiment:
+  warmup: 2m
+  baseline: 5m
+  timeout: 15m
+  application_stable: 10s
+  performance_window: 60s

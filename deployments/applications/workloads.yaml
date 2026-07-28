@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: experiment-producer
+  namespace: experiment
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: experiment-consumer
+  namespace: experiment
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: experiment-profile
+  namespace: experiment
+data:
+  profile.yaml: |
+    profile: B
+    brokers: [experiment-kafka-bootstrap.kafka.svc:9092]
+    topic: experiment-profile-b
+    consumer_group: experiment-apps
+    partitions: 3
+    replication_factor: 3
+    min_insync_replicas: 2
+    producer: {rate_per_second: 20, acks: all, idempotent: true, retries: 3}
+    message: {payload_bytes: 256}
+    metrics: {producer_address: ":8080", consumer_address: ":8081"}
+    experiment:
+      warmup: 30s
+      baseline: 90s
+      timeout: 5m
+      application_stable: 10s
+      performance_window: 60s
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+  namespace: experiment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: experiment-producer}
+  template:
+    metadata:
+      labels: {app: experiment-producer}
+    spec:
+      serviceAccountName: experiment-producer
+      containers:
+        - name: producer
+          image: kafka-sd-starter-producer:dev
+          imagePullPolicy: Never
+          args: ["--config=/config/profile.yaml", "--run-id=manual-baseline", "--output=/data/producer.jsonl"]
+          ports: [{name: metrics, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /metrics, port: metrics}, initialDelaySeconds: 2, periodSeconds: 5}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          volumeMounts:
+            - {name: config, mountPath: /config, readOnly: true}
+            - {name: data, mountPath: /data}
+      volumes:
+        - {name: config, configMap: {name: experiment-profile}}
+        - {name: data, emptyDir: {}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: producer-metrics
+  namespace: experiment
+  labels: {app: experiment-producer}
+spec:
+  selector: {app: experiment-producer}
+  ports: [{name: metrics, port: 8080, targetPort: metrics}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+  namespace: experiment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: experiment-consumer}
+  template:
+    metadata:
+      labels: {app: experiment-consumer}
+    spec:
+      serviceAccountName: experiment-consumer
+      containers:
+        - name: consumer
+          image: kafka-sd-starter-consumer:dev
+          imagePullPolicy: Never
+          args: ["--config=/config/profile.yaml", "--output=/data/consumer.jsonl"]
+          ports: [{name: metrics, containerPort: 8081}]
+          readinessProbe: {httpGet: {path: /metrics, port: metrics}, initialDelaySeconds: 2, periodSeconds: 5}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          volumeMounts:
+            - {name: config, mountPath: /config, readOnly: true}
+            - {name: data, mountPath: /data}
+      volumes:
+        - {name: config, configMap: {name: experiment-profile}}
+        - {name: data, emptyDir: {}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-metrics
+  namespace: experiment
+  labels: {app: experiment-consumer}
+spec:
+  selector: {app: experiment-consumer}
+  ports: [{name: metrics, port: 8081, targetPort: metrics}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: experiment-applications
+  namespace: monitoring
+  labels: {release: kube-prometheus-stack}
+spec:
+  namespaceSelector:
+    matchNames: [experiment]
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values: [experiment-producer, experiment-consumer]
+  podMetricsEndpoints:
+    - {port: metrics, interval: 5s}

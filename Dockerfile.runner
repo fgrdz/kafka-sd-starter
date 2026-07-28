@@ -1,0 +1,12 @@
+FROM golang:1.26 AS build
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -trimpath -o /experiment-runner ./cmd/experiment-runner
+
+FROM alpine:3.22
+RUN addgroup -S runner && adduser -S -G runner -u 65532 runner
+COPY --from=build /experiment-runner /experiment-runner
+USER 65532:65532
+ENTRYPOINT ["/experiment-runner"]

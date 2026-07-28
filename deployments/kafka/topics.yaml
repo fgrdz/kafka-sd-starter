@@ -1,0 +1,25 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: experiment-profile-a
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: experiment
+spec:
+  partitions: 3
+  replicas: 1
+  config:
+    min.insync.replicas: 1
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: experiment-profile-b
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: experiment
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    min.insync.replicas: 2
