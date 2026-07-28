@@ -1,4 +1,7 @@
 # kafka-sd-starter
+Os slides do projeto estão disponíveis no Google Slides:
+
+[Visualizar apresentação](https://docs.google.com/presentation/d/1wHn7KQD5b0yMpqVIYwgzu2dz1XTX5kMu/edit?usp=sharing&ouid=109481235169328712198&rtpof=true&sd=true)
 
 Laboratório acadêmico reproduzível para avaliar tolerância a falhas e
 observabilidade de Apache Kafka sobre Kubernetes. O projeto compara dois
