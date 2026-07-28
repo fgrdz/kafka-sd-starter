@@ -1,0 +1,40 @@
+NAMESPACE            NAME                                                        READY   STATUS      RESTARTS         AGE   IP            NODE                             NOMINATED NODE   READINESS GATES
+kafka                experiment-brokers-0                                        1/1     Running     1 (12h ago)      21h   10.244.3.4    kafka-experiment-worker2         <none>           <none>
+kafka                experiment-brokers-1                                        1/1     Running     0                21h   10.244.2.4    kafka-experiment-worker3         <none>           <none>
+kafka                experiment-brokers-2                                        1/1     Running     1 (12h ago)      21h   10.244.1.4    kafka-experiment-worker          <none>           <none>
+kafka                experiment-controllers-3                                    1/1     Running     0                21h   10.244.2.5    kafka-experiment-worker3         <none>           <none>
+kafka                experiment-controllers-4                                    1/1     Running     0                21h   10.244.3.5    kafka-experiment-worker2         <none>           <none>
+kafka                experiment-controllers-5                                    1/1     Running     1 (12h ago)      21h   10.244.1.6    kafka-experiment-worker          <none>           <none>
+kafka                experiment-entity-operator-549d8774b8-ml8f4                 2/2     Running     2 (12h ago)      21h   10.244.1.7    kafka-experiment-worker          <none>           <none>
+kafka                experiment-kafka-exporter-677df8979d-gxlhp                  1/1     Running     0                21h   10.244.3.6    kafka-experiment-worker2         <none>           <none>
+kafka                smoke-20260727204312-3d82-dqr9f                             0/1     Error       0                19h   10.244.1.10   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727221427-167c-cdrv8                             0/1     Error       0                18h   10.244.1.12   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727221427-167c-copy                              0/1     Completed   0                18h   10.244.1.13   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727225155-0514-copy                              0/1     Completed   0                17h   10.244.1.16   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727225155-0514-qktnd                             0/1     Error       0                17h   10.244.1.15   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727233400-35ab-7w5rg                             0/1     Error       0                17h   10.244.1.18   kafka-experiment-worker          <none>           <none>
+kafka                smoke-20260727233400-35ab-copy                              0/1     Completed   0                16h   10.244.1.19   kafka-experiment-worker          <none>           <none>
+kafka                strimzi-cluster-operator-97f97f7b7-zg7m7                    1/1     Running     21 (45m ago)     21h   10.244.1.2    kafka-experiment-worker          <none>           <none>
+kube-system          coredns-7d764666f9-jv9bc                                    1/1     Running     0                21h   10.244.0.2    kafka-experiment-control-plane   <none>           <none>
+kube-system          coredns-7d764666f9-lbft4                                    1/1     Running     1 (12h ago)      21h   10.244.0.4    kafka-experiment-control-plane   <none>           <none>
+kube-system          etcd-kafka-experiment-control-plane                         1/1     Running     0                21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+kube-system          kindnet-dph7c                                               1/1     Running     0                21h   172.20.0.4    kafka-experiment-worker3         <none>           <none>
+kube-system          kindnet-f85ft                                               1/1     Running     0                21h   172.20.0.3    kafka-experiment-worker          <none>           <none>
+kube-system          kindnet-mlzms                                               1/1     Running     0                21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+kube-system          kindnet-x2w5l                                               1/1     Running     0                21h   172.20.0.2    kafka-experiment-worker2         <none>           <none>
+kube-system          kube-apiserver-kafka-experiment-control-plane               1/1     Running     1 (12h ago)      21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+kube-system          kube-controller-manager-kafka-experiment-control-plane      1/1     Running     24 (27m ago)     21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+kube-system          kube-proxy-d7bjp                                            1/1     Running     0                21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+kube-system          kube-proxy-mpjw2                                            1/1     Running     0                21h   172.20.0.2    kafka-experiment-worker2         <none>           <none>
+kube-system          kube-proxy-pl9h5                                            1/1     Running     0                21h   172.20.0.4    kafka-experiment-worker3         <none>           <none>
+kube-system          kube-proxy-vmtfj                                            1/1     Running     0                21h   172.20.0.3    kafka-experiment-worker          <none>           <none>
+kube-system          kube-scheduler-kafka-experiment-control-plane               1/1     Running     28 (6m36s ago)   21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-5c85ddd7fc-gf8kj                     1/1     Running     0                21h   10.244.0.3    kafka-experiment-control-plane   <none>           <none>
+monitoring           kube-prometheus-stack-grafana-86c4944cfb-ch4f7              3/3     Running     0                21h   10.244.2.8    kafka-experiment-worker3         <none>           <none>
+monitoring           kube-prometheus-stack-kube-state-metrics-7cfd6d45cc-bm7jr   1/1     Running     4 (12h ago)      21h   10.244.3.8    kafka-experiment-worker2         <none>           <none>
+monitoring           kube-prometheus-stack-operator-6f7b8f4977-d8n4l             1/1     Running     11 (12h ago)     21h   10.244.2.6    kafka-experiment-worker3         <none>           <none>
+monitoring           kube-prometheus-stack-prometheus-node-exporter-bjwf4        1/1     Running     2 (12h ago)      21h   172.20.0.3    kafka-experiment-worker          <none>           <none>
+monitoring           kube-prometheus-stack-prometheus-node-exporter-kt8cj        1/1     Running     3 (12h ago)      21h   172.20.0.5    kafka-experiment-control-plane   <none>           <none>
+monitoring           kube-prometheus-stack-prometheus-node-exporter-smd9g        1/1     Running     3 (12h ago)      21h   172.20.0.4    kafka-experiment-worker3         <none>           <none>
+monitoring           kube-prometheus-stack-prometheus-node-exporter-tvnn5        1/1     Running     3 (12h ago)      21h   172.20.0.2    kafka-experiment-worker2         <none>           <none>
+monitoring           prometheus-kube-prometheus-stack-prometheus-0               2/2     Running     2 (12h ago)      21h   10.244.3.10   kafka-experiment-worker2         <none>           <none>

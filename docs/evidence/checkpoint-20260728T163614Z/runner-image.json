@@ -1,0 +1,42 @@
+[
+    {
+        "Id": "sha256:a26cf9b22aed5e09996ff4fbbfd9cf1a923a4f8bd4dbdba0929a6bd2eb6926b6",
+        "RepoTags": [
+            "kafka-sd-starter-runner:dev"
+        ],
+        "RepoDigests": [
+            "kafka-sd-starter-runner@sha256:a26cf9b22aed5e09996ff4fbbfd9cf1a923a4f8bd4dbdba0929a6bd2eb6926b6"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-07-28T16:04:28.357210009Z",
+        "Config": {
+            "User": "65532:65532",
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Entrypoint": [
+                "/experiment-runner"
+            ],
+            "WorkingDir": "/"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 14163954,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:6f09edfb3f6d7173733adc8eec8ea00626550dc6fc2dcf07d40e13f5c1e907c4",
+                "sha256:ea3870f81d94ff8d91c78856ed41fcd711204a69e615589a029697e21f1221ab",
+                "sha256:3f256a2dfbfa1f6d4acf2d14fe0b165e0dc2502307d972fcbc2ba6eff4d16070"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-28T16:09:16.76907244Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:a26cf9b22aed5e09996ff4fbbfd9cf1a923a4f8bd4dbdba0929a6bd2eb6926b6",
+            "size": 855
+        }
+    }
+]
