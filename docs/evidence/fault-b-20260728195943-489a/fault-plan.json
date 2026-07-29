@@ -1,0 +1,16 @@
+{
+  "run_id": "fault-b-20260728195943-489a",
+  "profile": "B",
+  "topic": "fault-b-20260728195943-489a",
+  "partition": 0,
+  "broker_id": 1,
+  "broker_pod": "experiment-brokers-1",
+  "broker_node": "kafka-experiment-worker3",
+  "namespace": "kafka",
+  "bootstrap_servers": [
+    "experiment-kafka-bootstrap.kafka.svc:9092"
+  ],
+  "planned_failure_time": "2026-07-28T20:08:28.635345807Z",
+  "dry_run": true,
+  "deletion_authorized": false
+}

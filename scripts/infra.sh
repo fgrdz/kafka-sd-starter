@@ -168,6 +168,63 @@ smoke_baseline() {
   printf 'Smoke baseline passed; results copied to %s\n' "$run_dir"
 }
 
+fault_experiment() {
+  local profile=$1 mode=$2
+  need kubectl
+  require_cluster
+  if [[ "$mode" == pilot && "${CONFIRM_DELETE:-}" != yes ]]; then
+    fail "fault pilot requires CONFIRM_DELETE=yes; no Kubernetes resource was created"
+  fi
+  local suffix run_id job_name config_map_name pvc_name results_pod_name config_file mode_arg
+  local rendered_job rendered_results run_dir
+  suffix="$(printf '%s' "$profile" | tr '[:upper:]' '[:lower:]')"
+  run_id="fault-${suffix}-$(date -u +%Y%m%d%H%M%S)-$(printf '%04x' "$RANDOM")"
+  job_name="$run_id"
+  config_map_name="$run_id-config"
+  pvc_name="$run_id-results"
+  results_pod_name="$run_id-copy"
+  config_file="configs/profile-$suffix.yaml"
+  run_dir="data/raw/$run_id"
+  mode_arg="--dry-run"
+  [[ "$mode" == pilot ]] && mode_arg="--confirm-delete"
+  rendered_job="$(mktemp)"
+  rendered_results="$(mktemp)"
+
+  render_fault_manifest deployments/applications/fault-job.yaml "$rendered_job" \
+    "$run_id" "$job_name" "$config_map_name" "$pvc_name" "$profile" "$mode_arg"
+  render_smoke_manifest deployments/applications/smoke-results-pod.yaml "$rendered_results" \
+    "$run_id" "$job_name" "$config_map_name" "$pvc_name" "$results_pod_name"
+
+  kubectl apply -f deployments/applications/fault-runner-rbac.yaml
+  kubectl create configmap "$config_map_name" -n kafka \
+    --from-file=profile.yaml="$config_file" --from-file=versions.env=versions.env
+  if ! kubectl create -f "$rendered_job"; then
+    smoke_diagnostics "$job_name"
+    printf 'Fault resources preserved because Job creation failed\n' >&2
+    return 1
+  fi
+  if ! wait_smoke_job "$job_name" "${FAULT_JOB_TIMEOUT:-25m}"; then
+    smoke_diagnostics "$job_name"
+    copy_smoke_results "$run_id" "$job_name" "$results_pod_name" "$rendered_results" "$run_dir" || true
+    printf 'Fault resources preserved for diagnosis: job/%s, configmap/%s, pvc/%s\n' \
+      "$job_name" "$config_map_name" "$pvc_name" >&2
+    return 1
+  fi
+  kubectl logs -n kafka "job/$job_name" --all-containers=true
+  copy_smoke_results "$run_id" "$job_name" "$results_pod_name" "$rendered_results" "$run_dir"
+  if ! validate_fault_results "$run_dir"; then
+    smoke_diagnostics "$job_name"
+    printf 'Fault resources preserved because copied results failed validation\n' >&2
+    return 1
+  fi
+  kubectl delete pod "$results_pod_name" -n kafka --wait=true
+  kubectl delete job "$job_name" -n kafka --wait=true
+  kubectl delete configmap "$config_map_name" -n kafka
+  kubectl delete pvc "$pvc_name" -n kafka --wait=true
+  rm -f "$rendered_job" "$rendered_results"
+  printf 'Fault %s passed; results copied to %s\n' "$mode" "$run_dir"
+}
+
 duration_seconds() {
   local value=$1
   [[ "$value" =~ ^[0-9]+[smh]$ ]] || return 1
@@ -240,6 +297,18 @@ render_smoke_manifest() {
     "$source" >"$destination"
 }
 
+render_fault_manifest() {
+  local source=$1 destination=$2 run_id=$3 job_name=$4 config_map_name=$5 pvc_name=$6 profile=$7 mode_arg=$8
+  sed \
+    -e "s|\${RUN_ID}|$run_id|g" \
+    -e "s|\${JOB_NAME}|$job_name|g" \
+    -e "s|\${CONFIG_MAP_NAME}|$config_map_name|g" \
+    -e "s|\${PVC_NAME}|$pvc_name|g" \
+    -e "s|\${PROFILE}|$profile|g" \
+    -e "s|\${FAULT_MODE_ARG}|$mode_arg|g" \
+    "$source" >"$destination"
+}
+
 smoke_diagnostics() {
   local job_name=$1
   kubectl logs -n kafka "job/$job_name" --all-containers=true || true
@@ -253,6 +322,19 @@ validate_smoke_results() {
   for file in metadata.json timeline.jsonl summary.json integrity.json; do
     if [[ ! -s "$run_dir/$file" ]]; then
       printf "error: required result '%s/%s' is missing or empty\n" "$run_dir" "$file" >&2
+      return 1
+    fi
+  done
+}
+
+validate_fault_results() {
+  local run_dir=$1 file
+  for file in metadata.json fault-plan.json timeline.jsonl producer.jsonl consumer.jsonl \
+    summary.json integrity.json kubernetes/pods-before.json kubernetes/pods-after.json \
+    kubernetes/events.jsonl kafka/topic-before.json kafka/topic-during.json \
+    kafka/topic-after.json recovery.json; do
+    if [[ ! -e "$run_dir/$file" ]]; then
+      printf "error: required fault result '%s/%s' is missing\n" "$run_dir" "$file" >&2
       return 1
     fi
   done
@@ -290,6 +372,10 @@ case "${1:-}" in
   load-images) load_images ;;
   apps-up) apps_up ;;
   smoke-baseline) smoke_baseline ;;
+  fault-dry-run-a) fault_experiment A dry-run ;;
+  fault-pilot-a) fault_experiment A pilot ;;
+  fault-dry-run-b) fault_experiment B dry-run ;;
+  fault-pilot-b) fault_experiment B pilot ;;
   status) status ;;
   apps-down) apps_down ;;
   cluster-down) cluster_down ;;

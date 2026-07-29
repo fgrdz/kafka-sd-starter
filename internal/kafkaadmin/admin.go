@@ -14,6 +14,32 @@ type Leader struct {
 	BrokerID  int32  `json:"broker_id"`
 }
 
+type PartitionState struct {
+	Topic       string  `json:"topic"`
+	Partition   int32   `json:"partition"`
+	Leader      int32   `json:"leader"`
+	Replicas    []int32 `json:"replicas"`
+	ISR         []int32 `json:"isr"`
+	LeaderEpoch int32   `json:"leader_epoch"`
+}
+
+type TopicState struct {
+	Topic                 string           `json:"topic"`
+	Partitions            []PartitionState `json:"partitions"`
+	LeaderlessPartitions  int              `json:"leaderless_partitions"`
+	UnderReplicated       int              `json:"under_replicated_partitions"`
+	ExpectedReplication   int              `json:"expected_replication"`
+	AllPartitionsHaveLead bool             `json:"all_partitions_have_leader"`
+}
+
+type Client interface {
+	Ping(context.Context) error
+	CreateTopic(context.Context, string, int32, int16, int) error
+	PartitionLeader(context.Context, string, int32) (Leader, error)
+	TopicState(context.Context, string) (TopicState, error)
+	Close()
+}
+
 type Admin struct {
 	client *kgo.Client
 	admin  *kadm.Client
@@ -44,6 +70,39 @@ func (a *Admin) PartitionLeader(ctx context.Context, topic string, partition int
 		return Leader{}, fmt.Errorf("partition %d has no leader", partition)
 	}
 	return Leader{Topic: topic, Partition: partition, BrokerID: part.Leader}, nil
+}
+
+func (a *Admin) TopicState(ctx context.Context, topic string) (TopicState, error) {
+	metadata, err := a.admin.ListTopics(ctx, topic)
+	if err != nil {
+		return TopicState{}, fmt.Errorf("list topic metadata: %w", err)
+	}
+	detail, ok := metadata[topic]
+	if !ok {
+		return TopicState{}, fmt.Errorf("topic %q not found", topic)
+	}
+	state := TopicState{Topic: topic, AllPartitionsHaveLead: true}
+	for id, partition := range detail.Partitions {
+		item := PartitionState{
+			Topic: topic, Partition: id, Leader: partition.Leader, LeaderEpoch: partition.LeaderEpoch,
+			Replicas: append([]int32(nil), partition.Replicas...), ISR: append([]int32(nil), partition.ISR...),
+		}
+		state.Partitions = append(state.Partitions, item)
+		if partition.Leader < 0 {
+			state.LeaderlessPartitions++
+			state.AllPartitionsHaveLead = false
+		}
+		if len(partition.ISR) < len(partition.Replicas) {
+			state.UnderReplicated++
+		}
+		if len(partition.Replicas) > state.ExpectedReplication {
+			state.ExpectedReplication = len(partition.Replicas)
+		}
+	}
+	if len(state.Partitions) == 0 {
+		return TopicState{}, fmt.Errorf("topic %q has no partitions", topic)
+	}
+	return state, nil
 }
 
 func (a *Admin) CreateTopic(ctx context.Context, topic string, partitions int32, replicationFactor int16, minISR int) error {

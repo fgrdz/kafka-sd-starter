@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${JOB_NAME}
+  namespace: kafka
+  labels:
+    app.kubernetes.io/name: experiment-runner
+    experiment/run-id: ${RUN_ID}
+    experiment/scenario: fault
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: experiment-runner
+        experiment/run-id: ${RUN_ID}
+        experiment/scenario: fault
+    spec:
+      serviceAccountName: experiment-fault-runner
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: runner
+          image: kafka-sd-starter-runner:dev
+          imagePullPolicy: Never
+          args:
+            - run
+            - --profile=${PROFILE}
+            - --scenario=fault
+            - --config=/config/profile.yaml
+            - --versions=/config/versions.env
+            - --output-root=/results
+            - --run-id=${RUN_ID}
+            - ${FAULT_MODE_ARG}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: "1", memory: 512Mi}
+          volumeMounts:
+            - {name: config, mountPath: /config, readOnly: true}
+            - {name: results, mountPath: /results}
+      volumes:
+        - name: config
+          configMap:
+            name: ${CONFIG_MAP_NAME}
+        - name: results
+          persistentVolumeClaim:
+            claimName: ${PVC_NAME}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${PVC_NAME}
+  namespace: kafka
+  labels:
+    experiment/run-id: ${RUN_ID}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 512Mi

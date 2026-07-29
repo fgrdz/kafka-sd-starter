@@ -1,0 +1,13 @@
+{"phase":"environment_validated","timestamp":"2026-07-28T20:01:06.428993959Z","type":"phase"}
+{"phase":"topic_created","timestamp":"2026-07-28T20:01:06.902904885Z","type":"phase"}
+{"phase":"applications_started","timestamp":"2026-07-28T20:01:06.906161373Z","type":"phase"}
+{"phase":"applications_available","timestamp":"2026-07-28T20:01:10.706298198Z","type":"phase"}
+{"phase":"warmup_started","timestamp":"2026-07-28T20:01:10.706311921Z","type":"phase"}
+{"phase":"warmup_finished","timestamp":"2026-07-28T20:03:16.473508673Z","type":"phase"}
+{"phase":"baseline_started","timestamp":"2026-07-28T20:03:16.473579629Z","type":"phase"}
+{"phase":"baseline_finished","timestamp":"2026-07-28T20:08:27.147291245Z","type":"phase"}
+{"broker_id":1,"broker_pod":"experiment-brokers-1","partition":0,"phase":"leader_discovered","timestamp":"2026-07-28T20:08:28.635332001Z","type":"phase"}
+{"phase":"producer_stopped","timestamp":"2026-07-28T20:08:28.640583418Z","type":"phase"}
+{"phase":"consumer_drained_and_stopped","timestamp":"2026-07-28T20:08:28.741310491Z","type":"phase"}
+{"phase":"integrity_calculated","timestamp":"2026-07-28T20:08:31.56386087Z","type":"phase"}
+{"dry_run":true,"phase":"experiment_completed","timestamp":"2026-07-28T20:08:31.717935669Z","type":"phase"}

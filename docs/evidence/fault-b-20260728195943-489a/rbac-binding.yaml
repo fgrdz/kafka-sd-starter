@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"name":"experiment-fault-runner","namespace":"kafka"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"Role","name":"experiment-fault-runner"},"subjects":[{"kind":"ServiceAccount","name":"experiment-fault-runner","namespace":"kafka"}]}
+  creationTimestamp: "2026-07-28T19:59:45Z"
+  name: experiment-fault-runner
+  namespace: kafka
+  resourceVersion: "81631"
+  uid: 8a4104e8-ad35-40a9-b72b-ecc61cc0a3c6
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: experiment-fault-runner
+subjects:
+- kind: ServiceAccount
+  name: experiment-fault-runner
+  namespace: kafka

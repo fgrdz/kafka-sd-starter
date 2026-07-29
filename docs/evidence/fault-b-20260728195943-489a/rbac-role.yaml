@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"Role","metadata":{"annotations":{},"name":"experiment-fault-runner","namespace":"kafka"},"rules":[{"apiGroups":[""],"resources":["pods"],"verbs":["get","list","watch","delete"]},{"apiGroups":[""],"resources":["events"],"verbs":["get","list","watch"]}]}
+  creationTimestamp: "2026-07-28T19:59:45Z"
+  name: experiment-fault-runner
+  namespace: kafka
+  resourceVersion: "81630"
+  uid: e46818b7-b3fe-4ea1-b3fb-0a8afa85adf7
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - get
+  - list
+  - watch

@@ -1,0 +1,4 @@
+Topic: fault-b-20260728195943-489a	TopicId: FdkXndBqS9iIEKXO66oaTw	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2
+	Topic: fault-b-20260728195943-489a	Partition: 0	Leader: 1	Replicas: 1,2,0	Isr: 1,2,0	Elr: 	LastKnownElr: 
+	Topic: fault-b-20260728195943-489a	Partition: 1	Leader: 2	Replicas: 2,0,1	Isr: 2,0,1	Elr: 	LastKnownElr: 
+	Topic: fault-b-20260728195943-489a	Partition: 2	Leader: 0	Replicas: 0,1,2	Isr: 0,1,2	Elr: 	LastKnownElr: 

@@ -1,0 +1,36 @@
+NAME                                          READY   STATUS      RESTARTS        AGE
+experiment-brokers-0                          1/1     Running     1 (13h ago)     22h
+experiment-brokers-1                          1/1     Running     0               22h
+experiment-brokers-2                          1/1     Running     1 (13h ago)     22h
+experiment-controllers-3                      1/1     Running     0               22h
+experiment-controllers-4                      1/1     Running     0               22h
+experiment-controllers-5                      1/1     Running     1 (13h ago)     22h
+experiment-entity-operator-549d8774b8-ml8f4   2/2     Running     2 (13h ago)     22h
+experiment-kafka-exporter-677df8979d-gxlhp    1/1     Running     0               22h
+smoke-20260727204312-3d82-dqr9f               0/1     Error       0               20h
+smoke-20260727221427-167c-cdrv8               0/1     Error       0               19h
+smoke-20260727221427-167c-copy                0/1     Completed   0               19h
+smoke-20260727225155-0514-copy                0/1     Completed   0               18h
+smoke-20260727225155-0514-qktnd               0/1     Error       0               18h
+smoke-20260727233400-35ab-7w5rg               0/1     Error       0               17h
+smoke-20260727233400-35ab-copy                0/1     Completed   0               17h
+strimzi-cluster-operator-97f97f7b7-zg7m7      1/1     Running     21 (101m ago)   22h
+smoke-20260728173415-317a-xp9cx               0/1     Pending     0               0s
+smoke-20260728173415-317a-xp9cx               0/1     Pending     0               0s
+smoke-20260728173415-317a-xp9cx               0/1     Pending     0               12s
+smoke-20260728173415-317a-xp9cx               0/1     ContainerCreating   0               13s
+smoke-20260728173415-317a-xp9cx               1/1     Running             0               16s
+smoke-20260728173415-317a-xp9cx               0/1     Completed           0               2m21s
+smoke-20260728173415-317a-xp9cx               0/1     Completed           0               2m22s
+smoke-20260728173415-317a-xp9cx               0/1     Completed           0               2m23s
+smoke-20260728173415-317a-copy                0/1     Pending             0               0s
+smoke-20260728173415-317a-copy                0/1     Pending             0               1s
+smoke-20260728173415-317a-copy                0/1     ContainerCreating   0               2s
+smoke-20260728173415-317a-copy                1/1     Running             0               9s
+smoke-20260728173415-317a-copy                1/1     Terminating         0               11s
+smoke-20260728173415-317a-copy                1/1     Terminating         0               12s
+smoke-20260728173415-317a-copy                0/1     Completed           0               12s
+smoke-20260728173415-317a-copy                0/1     Completed           0               13s
+smoke-20260728173415-317a-copy                0/1     Completed           0               13s
+smoke-20260728173415-317a-xp9cx               0/1     Completed           0               2m47s
+smoke-20260728173415-317a-xp9cx               0/1     Completed           0               2m47s

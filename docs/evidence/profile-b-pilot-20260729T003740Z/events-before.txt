@@ -1,0 +1,31 @@
+LAST SEEN   TYPE      REASON                  OBJECT                                                      MESSAGE
+11m         Warning   Unhealthy               pod/strimzi-cluster-operator-97f97f7b7-zg7m7                Liveness probe failed: Get "http://10.244.1.2:8080/healthy": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+4m4s        Warning   Unhealthy               pod/experiment-brokers-2                                    Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+4h5m        Warning   Unhealthy               pod/experiment-entity-operator-549d8774b8-ml8f4             Readiness probe failed: Get "http://10.244.1.7:8081/ready": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+4h6m        Warning   Unhealthy               pod/experiment-entity-operator-549d8774b8-ml8f4             Readiness probe failed: Get "http://10.244.1.7:8080/ready": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+4h4m        Warning   Unhealthy               pod/experiment-controllers-3                                Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+3h41m       Warning   Unhealthy               pod/experiment-brokers-0                                    Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+24m         Warning   Unhealthy               pod/strimzi-cluster-operator-97f97f7b7-zg7m7                Readiness probe failed: Get "http://10.244.1.2:8080/ready": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+6m15s       Warning   Unhealthy               pod/experiment-brokers-2                                    Liveness probe failed: command timed out: "/opt/kafka/kafka_liveness.sh" timed out after 5s
+4h          Warning   Unhealthy               pod/experiment-controllers-4                                Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+20m         Warning   Unhealthy               pod/experiment-brokers-1                                    Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+6m12s       Warning   Unhealthy               pod/experiment-controllers-5                                Liveness probe failed: command timed out: "/opt/kafka/kafka_liveness.sh" timed out after 5s
+6m12s       Warning   Unhealthy               pod/experiment-controllers-5                                Readiness probe failed: command timed out: "/opt/kafka/kafka_readiness.sh" timed out after 5s
+24m         Normal    Pulled                  pod/strimzi-cluster-operator-97f97f7b7-zg7m7                Container image "quay.io/strimzi/operator:1.1.0" already present on machine and can be accessed by the pod
+24m         Normal    Created                 pod/strimzi-cluster-operator-97f97f7b7-zg7m7                Container created
+24m         Normal    Started                 pod/strimzi-cluster-operator-97f97f7b7-zg7m7                Container started
+16m         Normal    WaitForFirstConsumer    persistentvolumeclaim/fault-a-20260729002155-5f50-results   waiting for first consumer to be created before binding
+16m         Normal    ExternalProvisioning    persistentvolumeclaim/fault-a-20260729002155-5f50-results   Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+16m         Normal    Provisioning            persistentvolumeclaim/fault-a-20260729002155-5f50-results   External provisioner is provisioning volume for claim "kafka/fault-a-20260729002155-5f50-results"
+16m         Normal    SuccessfulCreate        job/fault-a-20260729002155-5f50                             Created pod: fault-a-20260729002155-5f50-t648h
+16m         Normal    ProvisioningSucceeded   persistentvolumeclaim/fault-a-20260729002155-5f50-results   Successfully provisioned volume pvc-28851f85-8925-43a7-ab88-8162d585f619
+16m         Normal    Scheduled               pod/fault-a-20260729002155-5f50-t648h                       Successfully assigned kafka/fault-a-20260729002155-5f50-t648h to kafka-experiment-worker
+16m         Normal    Created                 pod/fault-a-20260729002155-5f50-t648h                       Container created
+16m         Normal    Started                 pod/fault-a-20260729002155-5f50-t648h                       Container started
+16m         Normal    Pulled                  pod/fault-a-20260729002155-5f50-t648h                       Container image "kafka-sd-starter-runner:dev" already present on machine and can be accessed by the pod
+8m16s       Normal    Completed               job/fault-a-20260729002155-5f50                             Job completed
+8m12s       Normal    Scheduled               pod/fault-a-20260729002155-5f50-copy                        Successfully assigned kafka/fault-a-20260729002155-5f50-copy to kafka-experiment-worker
+7m48s       Normal    Created                 pod/fault-a-20260729002155-5f50-copy                        Container created
+7m48s       Normal    Pulled                  pod/fault-a-20260729002155-5f50-copy                        Container image "kafka-sd-starter-runner:dev" already present on machine and can be accessed by the pod
+7m47s       Normal    Started                 pod/fault-a-20260729002155-5f50-copy                        Container started
+7m26s       Normal    Killing                 pod/fault-a-20260729002155-5f50-copy                        Stopping container results

@@ -85,7 +85,16 @@ func planOrRun(command string, args []string) error {
 	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	runDir, err := experiment.RunBaseline(ctx, cfg, options, *versionsPath)
+	var runDir string
+	if options.Scenario == "fault" {
+		if options.DryRun {
+			runDir, err = experiment.DryRunFault(ctx, cfg, options, *versionsPath)
+		} else {
+			runDir, err = experiment.RunFault(ctx, cfg, options, *versionsPath)
+		}
+	} else {
+		runDir, err = experiment.RunBaseline(ctx, cfg, options, *versionsPath)
+	}
 	if err != nil {
 		return err
 	}

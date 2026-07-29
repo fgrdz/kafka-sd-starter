@@ -154,10 +154,7 @@ func RunBaseline(ctx context.Context, cfg config.Config, options RunOptions, ver
 		return DryRun(cfg, options)
 	}
 	if options.Scenario == "fault" {
-		if !options.ConfirmDelete {
-			return "", errors.New("fault scenario is dry-run by default; --confirm-delete is required because it will force-delete a broker pod")
-		}
-		return "", errors.New("automatic pod deletion is not connected in this increment; no pod was removed")
+		return RunFault(ctx, cfg, options, versionsPath)
 	}
 	if _, err := Plan(cfg, options); err != nil {
 		return "", err
@@ -333,6 +330,9 @@ func RunBaseline(ctx context.Context, cfg config.Config, options RunOptions, ver
 	if err := writeJSON(filepath.Join(runDir, "integrity.json"), integrity); err != nil {
 		return "", err
 	}
+	if err := mark("integrity_calculated"); err != nil {
+		return "", err
+	}
 	metadata.Summary = &summary
 	metadata.Status = "passed"
 	if err := validateSummary(summary); err != nil {
@@ -342,7 +342,7 @@ func RunBaseline(ctx context.Context, cfg config.Config, options RunOptions, ver
 		}
 		return "", err
 	}
-	if err := mark("baseline_completed"); err != nil {
+	if err := mark("experiment_completed"); err != nil {
 		return "", err
 	}
 	if err := writeMetadata(runDir, metadata); err != nil {
@@ -556,6 +556,12 @@ func validateSummary(summary BaselineSummary) error {
 	}
 	if summary.Duplicates != 0 {
 		failures = append(failures, "duplicates="+strconv.Itoa(summary.Duplicates))
+	}
+	if summary.Missing != 0 {
+		failures = append(failures, "acknowledged_missing="+strconv.Itoa(summary.Missing))
+	}
+	if summary.Regressions != 0 {
+		failures = append(failures, "sequence_regressions="+strconv.Itoa(summary.Regressions))
 	}
 	if summary.OutOfOrder != 0 {
 		failures = append(failures, "out_of_order="+strconv.Itoa(summary.OutOfOrder))

@@ -1,0 +1,22 @@
+profile: B
+brokers: [experiment-kafka-bootstrap:9092]
+topic: smoke-replaced-at-runtime
+consumer_group: smoke-replaced-at-runtime
+partitions: 3
+replication_factor: 3
+min_insync_replicas: 2
+producer:
+  rate_per_second: 20
+  acks: all
+  idempotent: true
+  retries: 3
+message: {payload_bytes: 256}
+metrics:
+  producer_address: ":8080"
+  consumer_address: ":8081"
+experiment:
+  warmup: 30s
+  baseline: 90s
+  timeout: 5m
+  application_stable: 10s
+  performance_window: 60s

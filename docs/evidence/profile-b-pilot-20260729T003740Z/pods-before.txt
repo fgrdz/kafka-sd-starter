@@ -1,0 +1,17 @@
+NAME                                          READY   STATUS      RESTARTS        AGE   IP            NODE                       NOMINATED NODE   READINESS GATES
+experiment-brokers-0                          1/1     Running     1 (20h ago)     29h   10.244.3.4    kafka-experiment-worker2   <none>           <none>
+experiment-brokers-1                          1/1     Running     0               29h   10.244.2.4    kafka-experiment-worker3   <none>           <none>
+experiment-brokers-2                          1/1     Running     1 (20h ago)     29h   10.244.1.4    kafka-experiment-worker    <none>           <none>
+experiment-controllers-3                      1/1     Running     0               29h   10.244.2.5    kafka-experiment-worker3   <none>           <none>
+experiment-controllers-4                      1/1     Running     0               29h   10.244.3.5    kafka-experiment-worker2   <none>           <none>
+experiment-controllers-5                      1/1     Running     2 (4h44m ago)   29h   10.244.1.6    kafka-experiment-worker    <none>           <none>
+experiment-entity-operator-549d8774b8-ml8f4   2/2     Running     2 (20h ago)     29h   10.244.1.7    kafka-experiment-worker    <none>           <none>
+experiment-kafka-exporter-677df8979d-gxlhp    1/1     Running     0               29h   10.244.3.6    kafka-experiment-worker2   <none>           <none>
+smoke-20260727204312-3d82-dqr9f               0/1     Error       0               27h   10.244.1.10   kafka-experiment-worker    <none>           <none>
+smoke-20260727221427-167c-cdrv8               0/1     Error       0               26h   10.244.1.12   kafka-experiment-worker    <none>           <none>
+smoke-20260727221427-167c-copy                0/1     Completed   0               26h   10.244.1.13   kafka-experiment-worker    <none>           <none>
+smoke-20260727225155-0514-copy                0/1     Completed   0               25h   10.244.1.16   kafka-experiment-worker    <none>           <none>
+smoke-20260727225155-0514-qktnd               0/1     Error       0               25h   10.244.1.15   kafka-experiment-worker    <none>           <none>
+smoke-20260727233400-35ab-7w5rg               0/1     Error       0               25h   10.244.1.18   kafka-experiment-worker    <none>           <none>
+smoke-20260727233400-35ab-copy                0/1     Completed   0               24h   10.244.1.19   kafka-experiment-worker    <none>           <none>
+strimzi-cluster-operator-97f97f7b7-zg7m7      1/1     Running     23 (24m ago)    29h   10.244.1.2    kafka-experiment-worker    <none>           <none>
