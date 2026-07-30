@@ -3,24 +3,19 @@ kind: Job
 metadata:
   name: ${JOB_NAME}
   namespace: kafka
-  labels:
+  labels: &labels
     app.kubernetes.io/name: experiment-runner
     experiment/run-id: ${RUN_ID}
     experiment/profile: ${PROFILE}
-    experiment/scenario: fault
+    experiment/scenario: baseline
     experiment/repetition: "${REPETITION}"
 spec:
   backoffLimit: 0
   template:
     metadata:
-      labels:
-        app.kubernetes.io/name: experiment-runner
-        experiment/run-id: ${RUN_ID}
-        experiment/profile: ${PROFILE}
-        experiment/scenario: fault
-        experiment/repetition: "${REPETITION}"
+      labels: *labels
     spec:
-      serviceAccountName: experiment-fault-runner
+      automountServiceAccountToken: false
       restartPolicy: Never
       securityContext:
         fsGroup: 65532
@@ -32,13 +27,12 @@ spec:
           args:
             - run
             - --profile=${PROFILE}
-            - --scenario=fault
+            - --scenario=baseline
             - --repetition=${REPETITION}
             - --config=/config/profile.yaml
             - --versions=/config/versions.env
             - --output-root=/results
             - --run-id=${RUN_ID}
-            - ${FAULT_MODE_ARG}
           resources:
             requests: {cpu: 100m, memory: 128Mi}
             limits: {cpu: "1", memory: 512Mi}
@@ -61,7 +55,7 @@ metadata:
   labels:
     experiment/run-id: ${RUN_ID}
     experiment/profile: ${PROFILE}
-    experiment/scenario: fault
+    experiment/scenario: baseline
     experiment/repetition: "${REPETITION}"
 spec:
   accessModes: [ReadWriteOnce]

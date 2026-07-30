@@ -154,6 +154,54 @@ logs/
 `data/raw/` é ignorado pelo Git. Não adicione dados brutos ou resultados
 experimentais ao repositório.
 
+## Matriz experimental oficial
+
+A matriz oficial contém 20 execuções: cinco repetições de cada combinação
+`A/baseline`, `A/fault`, `B/baseline` e `B/fault`. `REPETITION` identifica
+uma execução individual; `REPETITIONS` define quantas repetições de cada
+combinação a matriz e o verificador esperam.
+
+Execuções individuais usam os targets abaixo:
+
+```bash
+make baseline-a REPETITION=1
+make baseline-b REPETITION=1
+CONFIRM_DELETE=yes make fault-a REPETITION=1
+CONFIRM_DELETE=yes make fault-b REPETITION=1
+```
+
+Falhas reais e a matriz exigem `CONFIRM_DELETE=yes` antes de criar qualquer
+Job destrutivo. Baselines não recebem token de ServiceAccount. IDs oficiais
+começam com `official-`; pilotos e dry-runs nunca contam como evidência oficial.
+
+A matriz é estritamente sequencial, alterna a ordem A/B a cada repetição e
+verifica a prontidão do Kafka e dos brokers antes e depois de cada execução.
+Ela pode ser retomada: combinações com metadata oficial válida em `data/raw`
+são ignoradas, enquanto pilotos, dry-runs, falhas e diretórios incompletos são
+desconsiderados. Recursos Kubernetes de uma execução que falha permanecem para
+diagnóstico, e uma nova chamada retoma as combinações ainda ausentes.
+
+```bash
+CONFIRM_DELETE=yes make matrix REPETITIONS=5 COOLDOWN_SECONDS=30
+```
+
+Como a matriz é longa, execute-a dentro de `tmux` na EC2. Faça backup de
+`data/raw` antes de iniciar ou retomar e nunca renomeie pilotos para o prefixo
+`official-`. Não há execução paralela.
+
+Valide e agregue resultados sem acessar o cluster:
+
+```bash
+make matrix-check REPETITIONS=1
+make aggregate
+```
+
+`matrix-check` exige exatamente as repetições esperadas, valida artefatos,
+versões e consistência de configuração. `aggregate` considera somente runs
+oficiais válidas e gera `data/processed/runs.csv` e
+`data/processed/aggregate.csv`; tempos de recuperação ficam vazios para
+baselines. Dados brutos permanecem em `data/raw/<run_id>/`.
+
 ## Estrutura do repositório
 
 ```text
@@ -169,8 +217,8 @@ results/                destinos reservados para figuras e tabelas
 
 ## Limitações atuais
 
-- o cenário baseline executa Kafka real, mas a injeção automática de falha
-  permanece desabilitada; `fault` é seguro por padrão e oferece `--dry-run`;
+- a injeção de falha remove um pod de broker, não simula falhas de nó, rede ou
+  disco; `fault` exige confirmação explícita e também oferece `--dry-run`;
 - a coleta de séries do Prometheus e de estados Kubernetes ainda não está
   conectada ao runner;
 - o laboratório roda em uma única máquina física e injeta falha de pod, não de
