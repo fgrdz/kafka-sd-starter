@@ -529,7 +529,28 @@ func (s *faultSession) stopAndAnalyze(ctx context.Context, metadata *Metadata) e
 	if err := s.mark("integrity_calculated", nil); err != nil {
 		return err
 	}
-	return validateSummary(summary)
+	return validateFaultSummary(summary)
+}
+
+func validateFaultSummary(summary BaselineSummary) error {
+	if summary.Attempted == 0 {
+		return errors.New("fault experiment produced no attempts")
+	}
+	if summary.Acknowledged == 0 {
+		return errors.New("fault experiment produced no acknowledgements")
+	}
+	if summary.Consumed == 0 {
+		return errors.New("fault experiment consumed no messages")
+	}
+	if summary.Acknowledged+summary.Failed != summary.Attempted {
+		return fmt.Errorf(
+			"fault experiment has incomplete producer outcomes: attempted=%d acknowledged=%d failed=%d",
+			summary.Attempted,
+			summary.Acknowledged,
+			summary.Failed,
+		)
+	}
+	return nil
 }
 
 func (s *faultSession) mark(phase string, fields map[string]any) error {
