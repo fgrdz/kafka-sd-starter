@@ -50,8 +50,18 @@ perfis, salvo justificativa metodológica registrada.
 - kubectl;
 - Kind 0.32.0;
 - Helm;
+- jq e Python 3;
 - GNU Make;
 - Bash.
+
+Para gerar os gráficos, também são necessários `pandas` e `matplotlib`.
+Eles podem ser instalados em um ambiente virtual:
+
+```bash
+python3 -m venv .venv-analysis
+source .venv-analysis/bin/activate
+python3 -m pip install pandas matplotlib
+```
 
 Reserve inicialmente 5–7 GiB de RAM, quatro CPUs e cerca de 12 GiB de disco
 para Docker/WSL2. O consumo real deve ser verificado antes do piloto.
@@ -63,6 +73,26 @@ make doctor
 make validate
 make test
 ```
+
+## Versões utilizadas
+
+As versões de infraestrutura são declaradas em `versions.env`; imagens e
+charts não usam `latest`.
+
+| Componente | Versão |
+|---|---|
+| Go | 1.26 |
+| Apache Kafka | 4.3.0 (`metadataVersion` 4.3-IV0) |
+| Strimzi Operator | 1.1.0 |
+| Kind | 0.32.0 |
+| Kubernetes / imagem Kind | 1.35.5 / `kindest/node:v1.35.5` fixada por digest |
+| `kubectl` | 1.35.5 |
+| Helm | 3.21.2 |
+| `kube-prometheus-stack` | 87.19.1 |
+
+As dependências Go exatas estão em `go.mod` e `go.sum`. Python, `pandas`
+e `matplotlib` não estão fixados; registre suas versões se os gráficos forem
+usados como evidência (`python3 --version` e `python3 -m pip freeze`).
 
 ## Instalação local
 
@@ -154,6 +184,26 @@ logs/
 `data/raw/` é ignorado pelo Git. Não adicione dados brutos ou resultados
 experimentais ao repositório.
 
+## Pilotos de falha
+
+Antes de injetar uma falha real, valide o plano dos dois perfis. O dry-run não
+remove nenhum broker:
+
+```bash
+make fault-dry-run-a
+make fault-dry-run-b
+```
+
+Execute então os pilotos reais, um perfil por vez:
+
+```bash
+CONFIRM_DELETE=yes make fault-pilot-a
+CONFIRM_DELETE=yes make fault-pilot-b
+```
+
+Smoke, pilotos e dry-runs servem para integração e diagnóstico, mas nunca
+contam como evidência da matriz oficial.
+
 ## Matriz experimental oficial
 
 A matriz oficial contém 20 execuções: cinco repetições de cada combinação
@@ -169,6 +219,12 @@ make baseline-b REPETITION=1
 CONFIRM_DELETE=yes make fault-a REPETITION=1
 CONFIRM_DELETE=yes make fault-b REPETITION=1
 ```
+
+Esses quatro comandos formam uma repetição oficial completa. `REPETITION`
+aceita valores de 1 a 99. Aguarde o Kafka e todos os brokers voltarem a
+`Ready` entre execuções; quando for executar as quatro combinações, prefira a
+matriz, que automatiza essa espera. Os timeouts podem ser ajustados com
+`BASELINE_JOB_TIMEOUT` e `FAULT_JOB_TIMEOUT`.
 
 Falhas reais e a matriz exigem `CONFIRM_DELETE=yes` antes de criar qualquer
 Job destrutivo. Baselines não recebem token de ServiceAccount. IDs oficiais
@@ -201,6 +257,53 @@ versões e consistência de configuração. `aggregate` considera somente runs
 oficiais válidas e gera `data/processed/runs.csv` e
 `data/processed/aggregate.csv`; tempos de recuperação ficam vazios para
 baselines. Dados brutos permanecem em `data/raw/<run_id>/`.
+
+O verificador também confere prefixo e ID, status, ausência de dry-run,
+métricas numéricas e exatamente uma run para cada perfil, cenário e repetição.
+Qualquer erro produz status de saída não zero.
+
+Depois da agregação, gere um resumo textual com cobertura, estatísticas por
+grupo e taxas por execução:
+
+```bash
+python3 scripts/analyze_results.py
+```
+
+Para gerar novamente os CSVs e criar gráficos em PNG (300 dpi) e PDF:
+
+```bash
+make aggregate
+python3 scripts/generate_charts.py
+```
+
+Os gráficos cobrem falhas de produção por repetição, tempos de recuperação,
+mensagens reconhecidas no baseline e indicadores de integridade.
+
+## Localização dos resultados
+
+```text
+data/raw/<run_id>/              artefatos brutos de cada execução
+  metadata.json                identidade, perfil, versões e configuração
+  timeline.jsonl               linha do tempo
+  producer.jsonl               eventos do produtor
+  consumer.jsonl               eventos do consumidor
+  summary.json                 contagens finais
+  integrity.json               perdas, duplicações, ordem e lag
+  recovery.json                recuperação (somente fault)
+  fault-plan.json              plano de injeção (somente fault)
+  kubernetes/                  pods e eventos coletados
+  kafka/                       estado do tópico antes/durante/depois
+  prometheus/                  destino de séries coletadas
+  logs/                        logs da execução
+data/processed/runs.csv         uma linha por run oficial válida
+data/processed/aggregate.csv    estatísticas por perfil, cenário e métrica
+data/processed/charts/          gráficos PNG e PDF
+data/excluded/                  runs retiradas manualmente da análise
+results/                        área reservada para figuras e tabelas publicáveis
+```
+
+`data/raw/` contém os dados primários: preserve-o e faça backup antes de
+reprocessar. Não renomeie pilotos para o prefixo `official-`.
 
 ## Estrutura do repositório
 
