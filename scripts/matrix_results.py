@@ -130,13 +130,22 @@ def inspect_run(path: Path, errors: list[str]) -> Run | None:
     return Run(path, metadata, summary or {}, recovery) if valid else None
 
 
-def normalized_config(metadata: dict[str, Any]) -> Any:
-    config = metadata.get("config")
+def normalized_config(metadata: dict[str, object]) -> dict[str, object]:
+    config = metadata.get("config", {})
+
     if not isinstance(config, dict):
-        return config
+        return {}
+
     normalized = dict(config)
-    normalized.pop("topic", None)
-    normalized.pop("consumer_group", None)
+
+    for dynamic_key in (
+        "Topic",
+        "ConsumerGroup",
+        "topic",
+        "consumer_group",
+    ):
+        normalized.pop(dynamic_key, None)
+
     return normalized
 
 
