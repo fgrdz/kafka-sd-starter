@@ -1,0 +1,86 @@
+=== COBERTURA ===
+A/baseline: 5
+B/baseline: 5
+A/fault: 5
+B/fault: 5
+
+=== MÉTRICAS POR GRUPO ===
+
+--- A/baseline ---
+attempted                  n=5 | mediana=42322.000 | média=42318.000 | mín=42302.000 | máx=42324.000
+acknowledged               n=5 | mediana=42322.000 | média=42318.000 | mín=42302.000 | máx=42324.000
+failed                     n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+consumed                   n=5 | mediana=42322.000 | média=42318.000 | mín=42302.000 | máx=42324.000
+acknowledged_missing       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+duplicates                 n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_regressions       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_gaps              n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+out_of_order               n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+final_lag                  n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+
+--- B/baseline ---
+attempted                  n=5 | mediana=42321.000 | média=42321.600 | mín=42320.000 | máx=42325.000
+acknowledged               n=5 | mediana=42321.000 | média=42321.600 | mín=42320.000 | máx=42325.000
+failed                     n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+consumed                   n=5 | mediana=42321.000 | média=42321.600 | mín=42320.000 | máx=42325.000
+acknowledged_missing       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+duplicates                 n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_regressions       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_gaps              n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+out_of_order               n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+final_lag                  n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+
+--- A/fault ---
+attempted                  n=5 | mediana=52703.000 | média=52702.000 | mín=51503.000 | máx=53403.000
+acknowledged               n=5 | mediana=51693.000 | média=51730.000 | mín=51159.000 | máx=52400.000
+failed                     n=5 | mediana=1003.000 | média=972.000 | mín=344.000 | máx=1501.000
+consumed                   n=5 | mediana=51693.000 | média=51730.000 | mín=51159.000 | máx=52400.000
+acknowledged_missing       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+duplicates                 n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_regressions       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_gaps              n=5 | mediana=1.000 | média=1.000 | mín=1.000 | máx=1.000
+out_of_order               n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+final_lag                  n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+infrastructure_seconds     n=5 | mediana=43.036 | média=45.032 | mín=33.025 | máx=53.055
+kafka_seconds              n=5 | mediana=40.027 | média=40.232 | mín=28.025 | máx=48.055
+application_seconds        n=5 | mediana=1.027 | média=1.032 | mín=1.015 | máx=1.055
+performance_seconds        n=5 | mediana=104.027 | média=104.032 | mín=92.025 | máx=111.055
+
+--- B/fault ---
+attempted                  n=5 | mediana=52811.000 | média=52779.200 | mín=51796.000 | máx=53696.000
+acknowledged               n=5 | mediana=52811.000 | média=52779.200 | mín=51796.000 | máx=53696.000
+failed                     n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+consumed                   n=5 | mediana=52811.000 | média=52779.200 | mín=51796.000 | máx=53696.000
+acknowledged_missing       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+duplicates                 n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_regressions       n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+sequence_gaps              n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+out_of_order               n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+final_lag                  n=5 | mediana=0.000 | média=0.000 | mín=0.000 | máx=0.000
+infrastructure_seconds     n=5 | mediana=43.027 | média=45.022 | mín=33.025 | máx=53.023
+kafka_seconds              n=5 | mediana=44.027 | média=43.822 | mín=34.025 | máx=52.023
+application_seconds        n=5 | mediana=1.023 | média=1.022 | mín=1.017 | máx=1.027
+performance_seconds        n=5 | mediana=105.027 | média=104.822 | mín=95.025 | máx=114.018
+
+=== TAXAS POR EXECUÇÃO ===
+profile	scenario	rep	ack_success_pct	failure_pct	consume_vs_ack_pct	missing_pct	duplicate_pct	gap_pct
+A	baseline	1	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+A	baseline	2	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+A	baseline	3	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+A	baseline	4	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+A	baseline	5	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+A	fault	1	99.3321	0.6679	100.0000	0.0000	0.0000	0.0020
+A	fault	2	98.0836	1.9164	100.0000	0.0000	0.0000	0.0019
+A	fault	3	98.0895	1.9105	100.0000	0.0000	0.0000	0.0019
+A	fault	4	97.1893	2.8107	100.0000	0.0000	0.0000	0.0019
+A	fault	5	98.1237	1.8763	100.0000	0.0000	0.0000	0.0019
+B	baseline	1	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	baseline	2	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	baseline	3	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	baseline	4	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	baseline	5	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	fault	1	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	fault	2	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	fault	3	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	fault	4	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000
+B	fault	5	100.0000	0.0000	100.0000	0.0000	0.0000	0.0000

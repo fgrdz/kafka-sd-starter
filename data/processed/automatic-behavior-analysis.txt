@@ -1,0 +1,54 @@
+
+infrastructure_seconds
+A: mediana=43.036, mín=33.025, máx=53.055
+B: mediana=43.027, mín=33.025, máx=53.023
+diferença B - A: -0.008
+variação relativa B vs A: -0.02%
+
+kafka_seconds
+A: mediana=40.027, mín=28.025, máx=48.055
+B: mediana=44.027, mín=34.025, máx=52.023
+diferença B - A: +4.000
+variação relativa B vs A: +9.99%
+
+application_seconds
+A: mediana=1.027, mín=1.015, máx=1.055
+B: mediana=1.023, mín=1.017, máx=1.027
+diferença B - A: -0.004
+variação relativa B vs A: -0.41%
+
+performance_seconds
+A: mediana=104.027, mín=92.025, máx=111.055
+B: mediana=105.027, mín=95.025, máx=114.018
+diferença B - A: +1.000
+variação relativa B vs A: +0.96%
+
+failed
+A: mediana=1003.000, mín=344.000, máx=1501.000
+B: mediana=0.000, mín=0.000, máx=0.000
+diferença B - A: -1003.000
+variação relativa B vs A: -100.00%
+
+acknowledged_missing
+A: mediana=0.000, mín=0.000, máx=0.000
+B: mediana=0.000, mín=0.000, máx=0.000
+diferença B - A: +0.000
+variação relativa B vs A: não calculável porque a mediana de A é zero
+
+duplicates
+A: mediana=0.000, mín=0.000, máx=0.000
+B: mediana=0.000, mín=0.000, máx=0.000
+diferença B - A: +0.000
+variação relativa B vs A: não calculável porque a mediana de A é zero
+
+sequence_gaps
+A: mediana=1.000, mín=1.000, máx=1.000
+B: mediana=0.000, mín=0.000, máx=0.000
+diferença B - A: -1.000
+variação relativa B vs A: -100.00%
+
+final_lag
+A: mediana=0.000, mín=0.000, máx=0.000
+B: mediana=0.000, mín=0.000, máx=0.000
+diferença B - A: +0.000
+variação relativa B vs A: não calculável porque a mediana de A é zero
